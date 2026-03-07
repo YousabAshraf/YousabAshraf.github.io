@@ -3,306 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>يوساب أشرف | مطور برمجيات</title>
+    <title>يوساب أشرف | Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --accent: #58a6ff;
+            --success: #2ea043;
+            --dark-card: rgba(22, 27, 34, 0.95);
         }
 
         body {
-            font-family: 'Cairo', 'Segoe UI', sans-serif;
-            background: linear-gradient(145deg, #0a0c10 0%, #1a1f2c 100%);
+            font-family: 'Cairo', sans-serif;
+            background: #0d1117;
+            background-image: radial-gradient(circle at 50% 50%, #161b22 0%, #0d1117 100%);
             color: white;
+            margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            margin: 0;
-            position: relative;
-            overflow-x: hidden;
+            padding: 20px;
         }
 
-        /* خلفية متحركة بنقاط مضيئة (تأثير تقني) */
-        body::before {
-            content: '';
-            position: absolute;
+        .container {
+            max-width: 500px;
             width: 100%;
-            height: 100%;
-            background-image: radial-gradient(circle at 30% 40%, rgba(88, 166, 255, 0.08) 0%, transparent 30%),
-                              radial-gradient(circle at 70% 60%, rgba(46, 160, 67, 0.08) 0%, transparent 35%),
-                              repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 2px, transparent 2px, transparent 8px);
-            pointer-events: none;
-            z-index: 0;
+            perspective: 1000px;
         }
 
         .card {
-            position: relative;
-            z-index: 10;
+            background: var(--dark-card);
+            border-radius: 24px;
+            padding: 40px 30px;
+            border: 1px solid #30363d;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
             text-align: center;
-            padding: 50px 45px;
-            background: rgba(22, 27, 34, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 32px;
-            box-shadow: 0 25px 50px -8px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
-            border: 1px solid rgba(48, 54, 61, 0.5);
-            max-width: 500px;
-            width: 90%;
-            transition: transform 0.3s ease;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.8s ease-out;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* صورة البروفايل بشكل احترافي */
-        .profile-img {
-            width: 130px;
-            height: 130px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #58a6ff, #2ea043);
-            padding: 4px;
+        /* صورة البروفايل */
+        .profile-wrapper {
+            position: relative;
+            width: 110px;
+            height: 110px;
             margin: 0 auto 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-            transition: 0.3s;
         }
 
-        .profile-img img {
+        .profile-initial {
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            background-color: #0d1117;
-            object-fit: cover;
-            border: 3px solid #161b22;
-            display: block;
-        }
-
-        /* لو مش عايز تستخدم صورة، هنستخدم الحرف الأول بشكل أنيق */
-        .profile-initial {
-            width: 130px;
-            height: 130px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, #1f2937, #111827);
-            margin: 0 auto 20px;
+            background: #1c2128;
+            border: 3px solid var(--accent);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 4.2rem;
+            font-size: 3rem;
             font-weight: 700;
-            color: #58a6ff;
-            border: 3px solid #30363d;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-            transition: 0.3s;
+            color: var(--accent);
+            position: relative;
+            z-index: 2;
         }
 
-        .profile-initial:hover {
-            border-color: #58a6ff;
-            transform: scale(1.02);
+        .dot {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 18px;
+            height: 18px;
+            background: var(--success);
+            border: 3px solid #161b22;
+            border-radius: 50%;
+            z-index: 3;
+            animation: pulse 2s infinite;
         }
 
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            background: linear-gradient(to right, #ffffff, #b1c9f0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -0.5px;
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(46, 160, 67, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(46, 160, 67, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(46, 160, 67, 0); }
         }
 
-        .title-tag {
-            display: inline-block;
-            background: rgba(88, 166, 255, 0.15);
-            color: #58a6ff;
-            font-weight: 600;
-            padding: 6px 20px;
+        h1 { margin: 10px 0; font-size: 2rem; }
+        
+        .tag {
+            font-size: 0.85rem;
+            background: rgba(88, 166, 255, 0.1);
+            color: var(--accent);
+            padding: 5px 15px;
             border-radius: 50px;
-            font-size: 1rem;
-            margin-bottom: 20px;
-            border: 1px solid rgba(88, 166, 255, 0.3);
-            backdrop-filter: blur(4px);
+            border: 1px solid rgba(88, 166, 255, 0.2);
         }
 
         .bio {
-            color: #c9d1d9;
-            font-size: 1.15rem;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            border-bottom: 1px dashed #30363d;
-            padding-bottom: 25px;
-        }
-
-        .stats {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-number {
-            display: block;
-            font-size: 1.7rem;
-            font-weight: 700;
-            color: #58a6ff;
-            line-height: 1.2;
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
             color: #8b949e;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            margin: 20px 0;
+            line-height: 1.6;
+            font-size: 0.95rem;
         }
 
+        /* الأزرار */
         .links {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin: 25px 0 10px;
+            margin-top: 25px;
         }
 
         .btn {
-            display: inline-flex;
+            padding: 12px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            padding: 12px 28px;
-            color: white;
-            text-decoration: none;
-            border-radius: 60px;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.25s ease;
-            border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
-            min-width: 140px;
         }
 
-        .btn-primary {
-            background: #238636;
-            border: 1px solid #2ea043;
-            box-shadow: 0 4px 12px rgba(35, 134, 54, 0.3);
-        }
+        .btn-gh { background: #238636; color: white; border: 1px solid #2ea043; }
+        .btn-gh:hover { background: #2ea043; transform: scale(1.03); }
 
-        .btn-primary:hover {
-            background: #2ea043;
-            transform: translateY(-4px);
-            box-shadow: 0 10px 20px -5px #2ea043;
-            border-color: #3fb950;
-        }
+        .btn-in { background: #0077b5; color: white; }
+        .btn-in:hover { transform: scale(1.03); }
 
-        .btn-outline {
-            border: 1px solid #58a6ff;
-            color: #58a6ff;
+        .btn-mail { 
+            grid-column: span 2; 
+            background: transparent; 
+            border: 1px solid #30363d; 
+            color: white; 
         }
+        .btn-mail:hover { background: #30363d; }
 
-        .btn-outline:hover {
-            background: rgba(88, 166, 255, 0.15);
-            transform: translateY(-4px);
-            border-color: #79c0ff;
-            color: #79c0ff;
-        }
-
-        /* Social proof / أيقونات صغيرة */
-        .social-hint {
+        footer {
             margin-top: 25px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            color: #6e7681;
-            font-size: 0.9rem;
-        }
-
-        .social-hint span {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .social-hint i {
-            font-style: normal;
-            font-size: 1.2rem;
-        }
-
-        hr {
-            border: none;
-            height: 1px;
-            background: linear-gradient(to left, transparent, #30363d, transparent);
-            margin: 20px 0 10px;
-        }
-
-        @media (max-width: 480px) {
-            .card { padding: 35px 20px; }
-            h1 { font-size: 2rem; }
-            .stats { gap: 15px; }
-            .btn { padding: 10px 20px; min-width: 120px; }
+            font-size: 0.75rem;
+            color: #484f58;
+            border-top: 1px solid #30363d;
+            padding-top: 15px;
         }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <!-- الصورة الشخصية بشكل احترافي (يمكنك تغييرها) -->
-        <div class="profile-initial">
-            ي
-        </div>
-        <!-- لو حابب تستخدم صورة حقيقية، استبدل الـ div أعلاه بهذا: -->
-        <!-- 
-        <div class="profile-img">
-            <img src="your-image.jpg" alt="يوساب أشرف">
-        </div> 
-        -->
-
-        <h1>يوساب أشرف</h1>
-        <div class="title-tag">ⵣ مطور برمجيات • Software Engineer</div>
-        
-        <p class="bio">
-            شغوف ببناء حلول ذكية وتجارب رقمية متميزة. 
-            أؤمن بأن البرمجة فن الإبداع لحل المشكلات.
-        </p>
-
-        <!-- إحصائيات سريعة (تقديرية) -->
-        <div class="stats">
-            <div class="stat-item">
-                <span class="stat-number">3+</span>
-                <span class="stat-label">سنوات خبرة</span>
+    <div class="container">
+        <div class="card">
+            <div class="profile-wrapper">
+                <div class="profile-initial">ي</div>
+                <div class="dot" title="Available for work"></div>
             </div>
-            <div class="stat-item">
-                <span class="stat-number">12</span>
-                <span class="stat-label">مشروع</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">5</span>
-                <span class="stat-label">شهادات</span>
-            </div>
-        </div>
 
-        <div class="links">
-            <a href="https://github.com/YousabAshraf" class="btn btn-primary" target="_blank">
-                <span>⎇</span> GitHub
-            </a>
-            <a href="mailto:yousab.ashraf@example.com" class="btn btn-outline">
-                <span>✉️</span> راسلني
-            </a>
-        </div>
+            <h1>يوساب أشرف</h1>
+            <span class="tag">Software Engineer | مطور برمجيات</span>
 
-        <!-- لمحة عن المشاريع أو وسائل التواصل -->
-        <hr>
-        <div class="social-hint">
-            <span><i>⚡</i> متاح للتعاون</span>
-            <span><i>💻</i> Open source</span>
-            <span><i>🌐</i> مصر</span>
+            <p class="bio">
+                أهلاً بك! أنا يوساب، مبرمج شغوف بتحويل الأفكار المعقدة إلى كود بسيط وجميل. متخصص في بناء المواقع والحلول الرقمية.
+            </p>
+
+            <div class="links">
+                <a href="https://github.com/YousabAshraf" class="btn btn-gh" target="_blank">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+                <a href="#" class="btn btn-in" target="_blank">
+                    <i class="fab fa-linkedin"></i> LinkedIn
+                </a>
+                <a href="mailto:yousab.ashraf@gmail.com" class="btn btn-mail">
+                    <i class="fas fa-envelope"></i> تواصل معي عبر البريد
+                </a>
+            </div>
+
+            <footer>
+                <i class="fas fa-location-dot"></i> مصر | صنع بكل حب بواسطة يوساب
+            </footer>
         </div>
     </div>
 
