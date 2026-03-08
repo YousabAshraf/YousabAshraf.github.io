@@ -1,0 +1,297 @@
+﻿@model Airline_Management_System__AMS_.ViewModels.BookingEditViewModel
+
+@{
+    var flight = ViewBag.Flight;
+    var passenger = ViewBag.Passenger;
+
+    var rows = Model.Seats
+        .Where(s => !string.IsNullOrEmpty(s.SeatNumber))
+        .GroupBy(s => s.SeatNumber.Substring(0, s.SeatNumber.Length - 1))
+        .OrderBy(g =>
+        {
+            return int.TryParse(g.Key, out int rowNum) ? rowNum : int.MaxValue;
+        })
+        .ToList();
+}
+
+<style>
+    :root {
+        --color-available: #4FC3F7; /* Economy - Blue */
+        --color-booked: #EF5350; /* Booked - Red */
+        --color-business: #FFD54F; /* Business - Gold */
+        --color-first: #9C27B0; /* First Class - Purple */
+        --color-selected: #66BB6A; /* Selected - Green */
+        --color-current: #37474F; /* Current Seat - Dark Grey */
+        --color-aisle: #37474F;
+        --color-background: #ECEFF1;
+        --color-fuselage: #546E7A;
+    }
+
+    .seat-selection-wrapper {
+        max-width: 1000px;
+        margin: 40px auto;
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .airplane-container {
+        max-width: 520px;
+        padding: 15px;
+        background: #CFD8DC;
+        border-radius: 20px;
+    }
+
+    .fuselage {
+        background-color: var(--color-fuselage);
+        border-radius: 12px;
+        padding: 20px 10px;
+        box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    .seat-row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 5px;
+    }
+
+    .seat-wrapper {
+        width: 40px;
+        height: 40px;
+    }
+
+    .row-label {
+        width: 25px;
+        color: #fff;
+        font-weight: bold;
+        font-size: 13px;
+    }
+
+    .seat-box {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 4px;
+        font-weight: bold;
+        color: white;
+        border: 1px solid rgba(0,0,0,0.2);
+        font-size: 12px;
+        transition: 0.2s;
+    }
+
+        /* ألوان الحالات */
+        .seat-box.available {
+            background-color: var(--color-available);
+            cursor: pointer;
+        }
+
+        .seat-box.business {
+            background-color: var(--color-business);
+            cursor: pointer;
+            color: #000;
+        }
+
+        .seat-box.first {
+            background-color: var(--color-first);
+            cursor: pointer;
+        }
+
+        .seat-box.booked {
+            background-color: var(--color-booked);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .seat-box.current-user-seat {
+            background-color: var(--color-current) !important;
+            border: 2px solid #fff;
+            cursor: default;
+        }
+
+        .seat-box.selected {
+            background-color: var(--color-selected) !important;
+            border: 2px solid #fff;
+            transform: scale(1.1);
+            box-shadow: 0 0 8px var(--color-selected);
+        }
+
+        .seat-box:hover:not(.booked):not(.current-user-seat) {
+            transform: scale(1.1);
+            filter: brightness(1.1);
+        }
+
+    .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+</style>
+
+<br />
+<h2 class="mb-4 text-center">✈️ Edit Booking for Flight @flight.FlightNumber</h2>
+<div class="alert alert-info" style="font-size:15px; line-height:1.7; border-radius:8px;">
+    <strong>Important Notice</strong><br>
+    This page allows you to change your <strong>seat only</strong> for this booking.<br><br>
+
+    Changing your <strong>personal information</strong> or modifying the <strong>flight date / aircraft</strong> is not available here.<br><br>
+
+    To update your personal details, please <strong>cancel your current booking</strong> first, then go to the
+    <strong>Passenger Profile</strong> page to edit your information.<br><br>
+
+    To change your flight date or choose a different flight, please <strong>cancel this booking</strong> and search for a new one on the
+    <strong>Search Flights</strong> page.
+</div>
+
+<div class="card p-4 shadow" style="max-width: 1000px; margin:auto;">
+    <!-- Flight & Passenger Info -->
+    <div class="row mb-4">
+        <div class="col-md-5 border-end pe-4">
+            <h4>Flight Details</h4>
+            <p><strong>Flight:</strong> @flight?.FlightNumber</p>
+            <p><strong>From:</strong> @flight?.Origin</p>
+            <p><strong>To:</strong> @flight?.Destination</p>
+            <p><strong>Departure:</strong> @flight?.DepartureTime.ToString("f")</p>
+            <p><strong>Arrival:</strong> @flight?.ArrivalTime.ToString("f")</p>
+        </div>
+        <div class="col-md-4 border-end ps-4">
+            <h4>Passenger Details</h4>
+            <p><strong>Name:</strong> @passenger?.FullName</p>
+            <p><strong>Email:</strong> @passenger?.Email</p>
+            <p><strong>Phone:</strong> @passenger?.PhoneNumber</p>
+            <p><strong>Passport:</strong> @passenger?.PassportNumber</p>
+            <p><strong>National ID:</strong> @passenger?.NationalId</p>
+        </div>
+        <div class="col-md-2 ps-4 ">
+            <h4>Current Seat</h4>
+            <p><strong>Seat:</strong> @Model.CurrentSeat</p>
+            <p><strong>Class:</strong> @Model.Class</p>
+            <p><strong>Price:</strong> @Model.TicketPrice EGP</p>
+        </div>
+    </div>
+
+<div class="seat-selection-wrapper d-flex flex-column flex-lg-row gap-4">
+    <div class="airplane-container">
+        <div class="cockpit" style="width: 80px; height: 40px; background: #455A64; margin: 0 auto 10px; border-radius: 40px 40px 0 0;"></div>
+        <div class="fuselage">
+            <div class="seat-map-layout">
+                @foreach (var rowGroup in rows)
+                {
+                    var seatsInRow = rowGroup.OrderBy(s => s.SeatNumber.Last()).ToList();
+                    <div class="seat-row">
+                        <div class="row-label">@rowGroup.Key</div>
+                        @foreach (var seat in seatsInRow)
+                        {
+                            string seatStatusClass = "booked";
+                            bool isCurrent = seat.SeatNumber == Model.CurrentSeat;
+
+                            if (isCurrent)
+                            {
+                                seatStatusClass = "current-user-seat";
+                            }
+                            else if (seat.IsAvailable)
+                            {
+                                if (seat.Class.Contains("First")) seatStatusClass = "first";
+                                else if (seat.Class.Contains("Business")) seatStatusClass = "business";
+                                else seatStatusClass = "available";
+                            }
+
+                            <div class="seat-wrapper">
+                                <div class="seat-box @seatStatusClass"
+                                     data-seat-id="@seat.SeatId"
+                                     data-seat-number="@seat.SeatNumber"
+                                     data-seat-class="@seat.Class"
+                                     data-seat-price="@seat.SeatPrice"
+                                     data-available="@(isCurrent ? "true" : seat.IsAvailable.ToString().ToLower())"
+                                     title="@seat.SeatNumber - @seat.Class @(isCurrent ? "(Your Seat)" : "")">
+                                    @seat.SeatNumber.Last()
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="flex-fill" style="min-width:300px; max-width:350px;">
+        <div class="card p-3 mb-3 shadow-sm">
+            <h5>Seat Categories</h5>
+            <div class="legend-area" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="legend-item"><span class="seat-box current-user-seat" style="width:20px; height:20px; display:inline-block"></span> Your Seat</div>
+                <div class="legend-item"><span class="seat-box first" style="width:20px; height:20px; display:inline-block"></span> First</div>
+                <div class="legend-item"><span class="seat-box business" style="width:20px; height:20px; display:inline-block"></span> Business</div>
+                <div class="legend-item"><span class="seat-box available" style="width:20px; height:20px; display:inline-block"></span> Economy</div>
+                <div class="legend-item"><span class="seat-box booked" style="width:20px; height:20px; display:inline-block"></span> Booked</div>
+                <div class="legend-item"><span class="seat-box selected" style="width:20px; height:20px; display:inline-block"></span> Selected</div>
+            </div>
+        </div>
+
+        <div class="card p-4 shadow">
+            <h4>Update Selection</h4>
+            <div id="seat-info" class="mb-3">
+                <p class="text-muted">Select a new seat to change your current booking...</p>
+            </div>
+
+            <form id="editSeatForm" asp-action="Edit" method="post">
+                <input type="hidden" name="bookingId" value="@Model.BookingId" />
+                <input type="hidden" id="selectedSeatId" name="selectedSeatId" value="" />
+
+                <button id="select-seat-btn" type="submit" class="btn btn-success w-100" disabled>
+                    Confirm Change
+                </button>
+                <a href="/Booking/MyBookings" class="btn btn-outline-secondary w-100 mt-2">Back to Bookings</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+@section Scripts {
+    <script>
+        let selectedSeatElement = null;
+        const seatInfo = document.getElementById('seat-info');
+        const selectBtn = document.getElementById('select-seat-btn');
+        const selectedSeatInput = document.getElementById('selectedSeatId');
+        const currentSeatNumber = "@Model.CurrentSeat";
+
+        document.querySelectorAll('.seat-box').forEach(box => {
+            box.addEventListener('click', function () {
+                const isAvailable = this.getAttribute('data-available') === "true";
+                const seatNo = this.dataset.seatNumber;
+
+                // منع اختيار الكراسي المحجوزة أو الكرسي الحالي نفسه
+                if (!isAvailable || seatNo === currentSeatNumber) return;
+
+                if (selectedSeatElement) selectedSeatElement.classList.remove('selected');
+
+                this.classList.add('selected');
+                selectedSeatElement = this;
+
+                const seatId = this.dataset.seatId;
+                const seatClass = this.dataset.seatClass;
+                const price = parseFloat(this.dataset.seatPrice).toLocaleString();
+
+                seatInfo.innerHTML = `
+                    <div class="alert alert-success">
+                        <strong>New Seat:</strong> ${seatNo} <br/>
+                        <strong>Class:</strong> ${seatClass} <br/>
+                        <strong>Price:</strong> ${price} EGP
+                    </div>
+                `;
+
+                selectBtn.disabled = false;
+                selectedSeatInput.value = seatId;
+            });
+        });
+    </script>
+}

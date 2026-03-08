@@ -1,0 +1,319 @@
+﻿@model Airline_Management_System__AMS_.ViewModels.VerifyEmailViewModel
+@{
+    ViewData["Title"] = "Verify Email";
+}
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #002244 0%, #004488 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        padding: 40px 20px;
+    }
+
+        body::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(0, 119, 204, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            top: -200px;
+            right: -150px;
+            animation: float 10s ease-in-out infinite;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 102, 0, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            bottom: -150px;
+            left: -100px;
+            animation: float 12s ease-in-out infinite reverse;
+        }
+
+    @@keyframes float {
+        0%, 100%
+
+    {
+        transform: translateY(0) translateX(0);
+    }
+
+    50% {
+        transform: translateY(-20px) translateX(20px);
+    }
+
+    }
+
+    .verify-box {
+        background: #FFFFFF;
+        border-radius: 16px;
+        padding: 50px 45px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        width: 100%;
+        max-width: 450px;
+        position: relative;
+        z-index: 1;
+        animation: slideIn 0.5s ease-out;
+        border-top: 4px solid #FF6600;
+    }
+
+    @@keyframes slideIn {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    .verify-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+        .verify-header::before {
+            content: '📧';
+            font-size: 48px;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .verify-header h3 {
+            color: #002244;
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0 0 10px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .verify-header p {
+            color: #4A4A4A;
+            font-size: 15px;
+            margin: 0;
+            font-weight: 400;
+        }
+
+    .alert {
+        padding: 14px 16px;
+        border-radius: 8px;
+        margin-bottom: 24px;
+        animation: fadeIn 0.3s ease-in;
+    }
+
+    .alert-success {
+        background-color: #E1F0FA;
+        border: 1px solid #0077CC;
+        color: #004488;
+        font-weight: 500;
+    }
+
+    .alert-danger {
+        background-color: #FFE5E8;
+        border: 1px solid #FF6600;
+        color: #721c24;
+        font-weight: 500;
+    }
+
+    @@keyframes fadeIn {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    .text-danger {
+        color: #dc3545;
+        font-size: 13px;
+        margin-top: 6px;
+        display: block;
+        font-weight: 500;
+    }
+
+    .form-group {
+        margin-bottom: 22px;
+        position: relative;
+    }
+
+        .form-group label {
+            display: block;
+            color: #002244;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+            letter-spacing: 0.3px;
+        }
+
+    .form-control {
+        width: 100%;
+        padding: 13px 16px;
+        border: 1px solid #E1E4E8;
+        border-radius: 8px;
+        font-size: 18px;
+        transition: all 0.2s ease;
+        background-color: #F5F7FA;
+        font-weight: 600;
+        text-align: center;
+        letter-spacing: 8px;
+    }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #0077CC;
+            background-color: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(0, 119, 204, 0.1);
+        }
+
+        .form-control::placeholder {
+            color: #A0AEC0;
+            font-weight: 400;
+            letter-spacing: normal;
+        }
+
+    .btn-primary {
+        width: 100%;
+        padding: 14px;
+        background-color: #FF6600;
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 12px rgba(255, 102, 0, 0.3);
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+
+        .btn-primary:hover {
+            background-color: #CC5200;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 102, 0, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+    .resend-form {
+        margin-top: 20px;
+    }
+
+    .btn-secondary {
+        width: 100%;
+        padding: 14px;
+        background-color: #6c757d;
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+        letter-spacing: 0.3px;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(108, 117, 125, 0.4);
+        }
+
+        .btn-secondary:active {
+            transform: translateY(0);
+        }
+
+    @@media (max-width: 576px) {
+        .verify-box
+
+    {
+        padding: 40px 30px;
+    }
+
+    .verify-header h3 {
+        font-size: 28px;
+    }
+
+    .verify-header::before {
+        font-size: 42px;
+    }
+
+    body {
+        padding: 20px 15px;
+    }
+
+    }
+</style>
+
+<div class="verify-box">
+    <div class="verify-header">
+        <h3>Email Verification</h3>
+        <p>Please enter the 6-digit code sent to your email</p>
+    </div>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    <form asp-action="VerifyEmail" method="post">
+        <input type="hidden" asp-for="UserId" />
+
+        <div class="form-group">
+            <label asp-for="Code">Verification Code</label>
+            <input asp-for="Code" class="form-control" placeholder="000000" maxlength="6" />
+            <span asp-validation-for="Code" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn-primary">Verify Email</button>
+    </form>
+
+    <form asp-action="ResendCode" method="post" class="resend-form">
+        <input type="hidden" name="userId" value="@Model.UserId" />
+        <button type="submit" class="btn-secondary">
+            Resend Verification Code
+        </button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

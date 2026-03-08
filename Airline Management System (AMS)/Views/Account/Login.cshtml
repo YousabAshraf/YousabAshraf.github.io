@@ -1,0 +1,347 @@
+﻿@model Airline_Management_System__AMS_.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #002244 0%, #004488 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        padding: 40px 20px;
+    }
+
+    body::before {
+        content: '';
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(0, 119, 204, 0.15) 0%, transparent 70%);
+        border-radius: 50%;
+        top: -200px;
+        right: -150px;
+        animation: float 10s ease-in-out infinite;
+    }
+
+    body::after {
+        content: '';
+        position: absolute;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(255, 102, 0, 0.1) 0%, transparent 70%);
+        border-radius: 50%;
+        bottom: -150px;
+        left: -100px;
+        animation: float 12s ease-in-out infinite reverse;
+    }
+
+    @@keyframes float {
+        0%, 100% {
+            transform: translateY(0) translateX(0);
+        }
+        50% {
+            transform: translateY(-20px) translateX(20px);
+        }
+    }
+
+    .login-container {
+        background: #FFFFFF;
+        border-radius: 16px;
+        padding: 50px 45px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        width: 100%;
+        max-width: 450px;
+        position: relative;
+        z-index: 1;
+        animation: slideIn 0.5s ease-out;
+        border-top: 4px solid #FF6600;
+    }
+
+    @@keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .login-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .login-header .icon {
+        font-size: 48px;
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    .login-header h2 {
+        color: #002244;
+        font-size: 32px;
+        font-weight: 700;
+        margin: 0 0 10px 0;
+        letter-spacing: -0.5px;
+    }
+
+    .login-header p {
+        color: #4A4A4A;
+        font-size: 15px;
+        margin: 0;
+        font-weight: 400;
+    }
+
+    .alert {
+        padding: 14px 16px;
+        border-radius: 8px;
+        margin-bottom: 24px;
+        animation: fadeIn 0.3s ease-in;
+    }
+
+    .alert-success {
+        background-color: #E1F0FA;
+        border: 1px solid #0077CC;
+        color: #004488;
+        font-weight: 500;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .text-danger {
+        color: #dc3545;
+        font-size: 13px;
+        margin-top: 6px;
+        display: block;
+        font-weight: 500;
+    }
+
+    .validation-summary {
+        background-color: #FFE5E8;
+        border: 1px solid #FF6600;
+        border-radius: 8px;
+        padding: 14px 16px;
+        margin-bottom: 24px;
+        color: #721c24;
+        animation: shake 0.4s ease-in-out;
+    }
+
+    @@keyframes shake {
+        0%, 100% {
+            transform: translateX(0);
+        }
+        25% {
+            transform: translateX(-8px);
+        }
+        75% {
+            transform: translateX(8px);
+        }
+    }
+
+    .validation-summary ul {
+        margin: 0;
+        padding-left: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 22px;
+        position: relative;
+    }
+
+    .form-group label {
+        display: block;
+        color: #002244;
+        font-weight: 600;
+        margin-bottom: 8px;
+        font-size: 14px;
+        letter-spacing: 0.3px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 13px 16px;
+        border: 1px solid #E1E4E8;
+        border-radius: 8px;
+        font-size: 15px;
+        transition: all 0.2s ease;
+        background-color: #F5F7FA;
+        font-weight: 400;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #0077CC;
+        background-color: #FFFFFF;
+        box-shadow: 0 0 0 3px rgba(0, 119, 204, 0.1);
+    }
+
+    .form-control::placeholder {
+        color: #A0AEC0;
+    }
+
+    .form-check {
+        display: flex;
+        align-items: center;
+        margin-bottom: 24px;
+    }
+
+    .form-check-input {
+        width: 18px;
+        height: 18px;
+        margin-right: 10px;
+        cursor: pointer;
+        accent-color: #0077CC;
+        border-radius: 4px;
+    }
+
+    .form-check-label {
+        color: #4A4A4A;
+        font-size: 14px;
+        cursor: pointer;
+        user-select: none;
+        font-weight: 500;
+    }
+
+    .btn-primary {
+        width: 100%;
+        padding: 14px;
+        background-color: #FF6600;
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 12px rgba(255, 102, 0, 0.3);
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+
+    .btn-primary:hover {
+        background-color: #CC5200;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(255, 102, 0, 0.4);
+    }
+
+    .btn-primary:active {
+        transform: translateY(0);
+    }
+
+    .register-link {
+        text-align: center;
+        color: #4A4A4A;
+        font-size: 14px;
+        margin-top: 28px;
+        padding-top: 24px;
+        border-top: 1px solid #E1E4E8;
+        font-weight: 400;
+    }
+
+    .register-link a {
+        color: #0077CC;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.2s ease;
+    }
+
+    .register-link a:hover {
+        color: #004488;
+        text-decoration: underline;
+    }
+
+    @@media (max-width: 576px) {
+        .login-container {
+            padding: 40px 30px;
+        }
+
+        .login-header h2 {
+            font-size: 28px;
+        }
+
+        body {
+            padding: 20px 15px;
+        }
+    }
+</style>
+
+<div class="login-container">
+    <div class="login-header">
+        <span class="icon">✈️</span>
+        <h2>Welcome Back</h2>
+        <p>Sign in to access your airline dashboard</p>
+    </div>
+
+
+
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Error"]
+        </div>
+    }
+    @if(ViewData.ModelState.ErrorCount > 0)
+    {
+    <div asp-validation-summary="All" class="validation-summary text-danger"></div>
+	}
+
+    <form asp-action="Login" method="post">
+        <div class="form-group">
+            <label asp-for="Email">Email Address</label>
+            <input asp-for="Email" class="form-control" placeholder="Enter your email" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Password">Password</label>
+            <input asp-for="Password" class="form-control" placeholder="Enter your password" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <div class="form-check">
+            <input asp-for="RememberMe" class="form-check-input" />
+            <label asp-for="RememberMe" class="form-check-label">Remember me</label>
+        </div>
+
+        <button type="submit" class="btn-primary">Sign In</button>
+    </form>
+
+    <div class="register-link">
+        Don't have an account? <a asp-controller="Account" asp-action="Register">Create Account</a>
+    </div>
+    <div class="register-link" style="margin-top: 12px; padding-top: 0; border-top: none;">
+        <a asp-controller="Account" asp-action="ForgetPassword">Forgot Password?</a>
+    </div>
+</div>
+
+@section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+}
