@@ -1,6 +1,6 @@
 export const projects = [
   {
-    title: 'E-Commerce Platform',
+    title: 'Code setting',
     description:
       'A full-stack e-commerce web application with user authentication, product management, shopping cart, and payment integration.',
     technologies: ['React', 'Node.js', 'MongoDB', 'Express'],
